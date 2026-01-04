@@ -1,0 +1,64 @@
+---
+export interface Props {
+  items: Array<{
+    name: string;
+    image: string;
+    link: string;
+    altText?: string;
+  }>;
+  outfitId: string;
+}
+
+const { items, outfitId } = Astro.props;
+---
+
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+  {items.map((item, idx) => (
+    <a 
+      href={item.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="group rounded-lg overflow-hidden transition-all hover:shadow-lg bg-white border border-stone-200 dark:bg-neutral-800 dark:border-neutral-700"
+    >
+      <div class="relative">
+        <img 
+          src={item.image}
+          alt={item.altText || `${item.name} - Shop on Amazon`}
+          loading="lazy"
+          decoding="async"
+          class="w-full object-cover"
+          style="aspect-ratio: 1/1;"
+        />
+        
+        <!-- Pin button on hover -->
+        <button 
+          onclick={`event.preventDefault(); window.pinItem('${item.image}', '${item.name.replace(/'/g, "\\'")}', '${item.link}'); return false;`}
+          class="absolute top-2 right-2 bg-white hover:bg-white/90 p-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+          aria-label={`Pin ${item.name}`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="17" x2="12" y2="22"></line>
+            <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="p-3">
+        <p class="text-sm leading-snug mb-2 line-clamp-2 font-medium text-stone-800 dark:text-neutral-200">
+          {item.name}
+        </p>
+        <p class="text-xs text-stone-600 dark:text-neutral-400">
+          Shop on Amazon →
+        </p>
+      </div>
+    </a>
+  ))}
+</div>
+
+<script>
+  window.pinItem = function(imageUrl, name, link) {
+    const pinterestUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(link)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(name)}`;
+    window.open(pinterestUrl, '_blank', 'width=750,height=600');
+    trackEvent('pin_item_click', { item_name: name });
+  }
+</script>

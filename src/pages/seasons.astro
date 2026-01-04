@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+
+const title = "Shop by Season - Daily Fashion Finds";
+const description = "Browse outfits by season. Find the perfect spring, summer, fall, or winter look.";
+
+const seasons = ['spring', 'summer', 'fall', 'winter'];
+---
+
+<BaseLayout title={title} description={description}>
+  <Header showBack={true} backUrl="/" />
+  
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-2 gap-4">
+      {seasons.map(season => (
+        <a 
+          href={`/season/${season}`}
+          class="aspect-square transition-colors rounded-lg flex items-center justify-center bg-stone-100 hover:bg-stone-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+        >
+          <span class="text-xl font-light uppercase tracking-widest text-stone-700 dark:text-neutral-300">
+            {season}
+          </span>
+        </a>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

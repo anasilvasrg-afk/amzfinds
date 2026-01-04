@@ -1,0 +1,91 @@
+---
+export interface Props {
+  url: string;
+  variant?: 'desktop' | 'mobile';
+}
+
+const { url, variant = 'desktop' } = Astro.props;
+---
+
+{variant === 'desktop' ? (
+  <div class="hidden md:flex gap-2">
+    <button 
+      onclick={`navigator.clipboard.writeText('${url}'); this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>'; setTimeout(() => this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>', 2000); trackEvent('copy_link');`}
+      class="py-1.5 px-2.5 text-xs rounded-lg transition-colors flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-300"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span>Copy</span>
+    </button>
+    
+    <button 
+      onclick={`trackEvent('instagram_share'); alert('To share on Instagram: Screenshot or copy the link!\\n\\n${url}'); navigator.clipboard.writeText('${url}');`}
+      class="py-1.5 px-2.5 text-xs rounded-lg transition-colors flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-300"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      <span>Instagram</span>
+    </button>
+    
+    <button 
+      onclick={`window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('${url}'), '_blank', 'width=600,height=400'); trackEvent('facebook_share');`}
+      class="py-1.5 px-2.5 text-xs rounded-lg transition-colors flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-300"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      <span>Facebook</span>
+    </button>
+  </div>
+) : (
+  <div class="md:hidden grid grid-cols-4 gap-1.5 mb-3">
+    <button 
+      onclick={`navigator.clipboard.writeText('${url}'); trackEvent('copy_link');`}
+      class="py-1.5 px-1 text-xs rounded transition-colors flex flex-col items-center justify-center gap-0.5 bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-300"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span class="text-[9px]">Copy</span>
+    </button>
+    
+    <button 
+      onclick={`trackEvent('instagram_share');`}
+      class="py-1.5 px-1 text-xs rounded transition-colors flex flex-col items-center justify-center gap-0.5 bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-300"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      <span class="text-[9px]">Instagram</span>
+    </button>
+    
+    <button 
+      onclick={`window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent('${url}'), '_blank', 'width=600,height=400'); trackEvent('facebook_share');`}
+      class="py-1.5 px-1 text-xs rounded transition-colors flex flex-col items-center justify-center gap-0.5 bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-300"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      <span class="text-[9px]">Facebook</span>
+    </button>
+    
+    <button 
+      onclick={`trackEvent('messenger_share');`}
+      class="py-1.5 px-1 text-xs rounded transition-colors flex flex-col items-center justify-center gap-0.5 bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-300"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      <span class="text-[9px]">Messenger</span>
+    </button>
+  </div>
+)}

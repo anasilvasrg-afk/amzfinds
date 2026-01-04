@@ -1,0 +1,42 @@
+---
+export interface Props {
+  variant: 'homepage' | 'outfit' | 'exit';
+}
+
+const { variant } = Astro.props;
+
+const config = {
+  homepage: {
+    text: '🚀 Build a $2K/Month Pinterest Side Hustle | Learn How →',
+    bgClass: 'bg-[#F5EDE4] border-[#E8DDD0] hover:bg-[#EFE5D8] dark:bg-neutral-800/70 dark:border-neutral-600 dark:hover:bg-neutral-800',
+    textClass: 'text-stone-700 dark:text-neutral-200',
+    event: 'homepage_banner_click'
+  },
+  outfit: {
+    text: '🔥 How I Turn Outfit Pinning Into $2,847/Month →',
+    bgClass: 'bg-[#F5EDE4] border-[#E8DDD0] hover:bg-[#EFE5D8] dark:bg-neutral-800/70 dark:border-neutral-600 dark:hover:bg-neutral-800',
+    textClass: 'text-stone-700 dark:text-neutral-200',
+    event: 'outfit_banner_click'
+  },
+  exit: {
+    text: '💰 Before You Go: See How to Turn Pinterest Into $2,847/Month →',
+    bgClass: 'bg-[#FDF2F0] border-[#F5DDD8] hover:bg-[#FAEAE6] dark:bg-rose-900/20 dark:border-rose-800/50 dark:hover:bg-rose-900/30',
+    textClass: 'text-stone-700 dark:text-rose-200',
+    event: 'exit_banner_click'
+  }
+};
+
+const { text, bgClass, textClass, event } = config[variant];
+---
+
+<a 
+  href="https://pinterestwealthacademy.com/" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  onclick={`trackEvent('${event}')`}
+  class={`block p-4 rounded-xl text-center transition-all shadow-sm hover:shadow-md border ${bgClass}`}
+>
+  <p class={`text-sm font-medium ${textClass}`}>
+    {text}
+  </p>
+</a>

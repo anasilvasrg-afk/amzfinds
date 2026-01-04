@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import PromoBar from '../components/PromoBar.astro';
+import OutfitCard from '../components/OutfitCard.astro';
+
+// Import outfit data (generated during build)
+let outfits = [];
+try {
+  const data = await import('../data/outfits.json');
+  outfits = data.default || [];
+} catch (e) {
+  console.log('No outfit data found, using empty array');
+}
+
+const title = "Daily Fashion Finds - Shop the Trendiest Styles";
+const description = "Discover daily fashion finds and shop curated outfits by season. Find the perfect look and shop directly on Amazon.";
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  
+  <!-- Homepage Promo Banner -->
+  <div class="max-w-7xl mx-auto px-4 pt-4">
+    <PromoBar variant="homepage" />
+  </div>
+  
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    {outfits.length === 0 ? (
+      <div class="text-center py-12">
+        <p class="text-stone-500 dark:text-neutral-400">No outfits yet. Check back soon!</p>
+      </div>
+    ) : (
+      <div class="masonry-grid">
+        {outfits.map(outfit => (
+          <OutfitCard outfit={outfit} />
+        ))}
+      </div>
+    )}
+  </main>
+  
+  <!-- Back to Top Button -->
+  <button 
+    id="back-to-top"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    class="fixed bottom-8 right-8 p-3 rounded-full shadow-lg transition-all opacity-0 pointer-events-none bg-stone-800 hover:bg-stone-900 text-white dark:bg-neutral-700 dark:hover:bg-neutral-600 z-40"
+    aria-label="Back to top"
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
+  
+  <script>
+    // Show/hide back to top button
+    window.addEventListener('scroll', () => {
+      const btn = document.getElementById('back-to-top');
+      if (window.pageYOffset > 500) {
+        btn.classList.remove('opacity-0', 'pointer-events-none');
+        btn.classList.add('opacity-100');
+      } else {
+        btn.classList.add('opacity-0', 'pointer-events-none');
+        btn.classList.remove('opacity-100');
+      }
+    });
+  </script>
+</BaseLayout>

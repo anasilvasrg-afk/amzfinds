@@ -1,0 +1,62 @@
+---
+export interface Props {
+  outfits: Array<{
+    id: string;
+    slug: string;
+    mainImage: string;
+    mainImageAlt?: string;
+    season: string;
+    seoTitle?: string;
+  }>;
+  currentOutfitId: string;
+}
+
+const { outfits, currentOutfitId } = Astro.props;
+
+// Find nearby outfits
+const currentIndex = outfits.findIndex(o => o.id === currentOutfitId);
+const nearby = [];
+
+if (currentIndex > 0) nearby.push(outfits[currentIndex - 1]);
+if (currentIndex < outfits.length - 1) nearby.push(outfits[currentIndex + 1]);
+if (currentIndex < outfits.length - 2) {
+  nearby.push(outfits[currentIndex + 2]);
+} else if (currentIndex > 1) {
+  nearby.unshift(outfits[currentIndex - 2]);
+}
+
+const displayOutfits = nearby.slice(0, 3);
+---
+
+{displayOutfits.length > 0 && (
+  <div class="mt-10 pt-8 border-t border-stone-200 dark:border-neutral-700">
+    <h3 class="text-center text-lg font-light tracking-wide mb-6 text-stone-600 dark:text-neutral-300">
+      Keep Exploring
+    </h3>
+    <div class={`grid gap-4 ${displayOutfits.length === 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-3'}`}>
+      {displayOutfits.map(outfit => (
+        <a 
+          href={`/outfit/${outfit.slug}`}
+          class="group rounded-lg overflow-hidden transition-all hover:shadow-lg bg-stone-50 dark:bg-neutral-800"
+        >
+          <div class="relative" style="aspect-ratio: 2/3;">
+            <img 
+              src={outfit.mainImage}
+              alt={outfit.mainImageAlt || `${outfit.season} outfit`}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          {outfit.seoTitle && (
+            <div class="p-3">
+              <p class="text-xs line-clamp-2 text-stone-500 dark:text-neutral-400">
+                {outfit.seoTitle}
+              </p>
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+)}

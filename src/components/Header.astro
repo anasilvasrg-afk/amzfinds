@@ -1,0 +1,81 @@
+---
+export interface Props {
+  showBack?: boolean;
+  backUrl?: string;
+}
+
+const { showBack = false, backUrl = '/' } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 bg-white border-b border-stone-200 dark:bg-neutral-900 dark:border-neutral-700">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <!-- Left: Back or Menu -->
+    {showBack ? (
+      <a href={backUrl} class="p-2 hover:opacity-70" aria-label="Go back">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+    ) : (
+      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="p-2 hover:opacity-70" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    )}
+    
+    <!-- Center: Logo -->
+    <a href="/" class="text-xl md:text-2xl font-light tracking-wider text-stone-800 dark:text-neutral-100">
+      STYLE FINDS
+    </a>
+    
+    <!-- Right: Search + Dark Mode -->
+    <div class="flex items-center gap-2">
+      <button onclick="document.getElementById('search-bar').classList.toggle('hidden')" class="p-2 hover:opacity-70" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </button>
+      <button onclick="toggleDarkMode()" class="p-2 rounded-full transition-colors text-stone-600 dark:text-yellow-400" aria-label="Toggle dark mode">
+        <svg class="dark:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="hidden dark:block" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Search Bar (hidden by default) -->
+  <div id="search-bar" class="hidden px-4 pb-3 bg-white dark:bg-neutral-900">
+    <form action="/search" method="get">
+      <input 
+        type="text" 
+        name="q"
+        placeholder="Search outfits, seasons, items..." 
+        class="w-full px-4 py-2 border rounded-lg text-sm border-stone-200 dark:bg-neutral-800 dark:border-neutral-600 dark:text-white"
+      />
+    </form>
+  </div>
+  
+  <!-- Mobile Menu (hidden by default) -->
+  <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-white border-b shadow-lg dark:bg-neutral-800 dark:border-neutral-700">
+    <div class="p-4 space-y-2">
+      <a href="/" class="block w-full text-left px-4 py-3 rounded-lg hover:bg-stone-100 dark:hover:bg-neutral-700">Home</a>
+      <a href="/seasons" class="block w-full text-left px-4 py-3 rounded-lg hover:bg-stone-100 dark:hover:bg-neutral-700">Shop by Season</a>
+      <a href="/accessories" class="block w-full text-left px-4 py-3 rounded-lg hover:bg-stone-100 dark:hover:bg-neutral-700">Accessories</a>
+    </div>
+  </div>
+</header>

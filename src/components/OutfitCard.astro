@@ -1,0 +1,53 @@
+---
+export interface Props {
+  outfit: {
+    id: string;
+    slug: string;
+    mainImage: string;
+    mainImageAlt?: string;
+    season: string;
+    seoTitle?: string;
+  };
+}
+
+const { outfit } = Astro.props;
+const alt = outfit.mainImageAlt || `${outfit.season} outfit inspiration`;
+---
+
+<div class="masonry-item group relative">
+  <a 
+    href={`/outfit/${outfit.slug}`}
+    class="block w-full relative overflow-hidden rounded-lg bg-stone-100 dark:bg-neutral-800"
+  >
+    <img 
+      src={outfit.mainImage} 
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+    />
+    
+    <!-- Pin button on hover (desktop) -->
+    <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity hidden md:block">
+      <button 
+        onclick={`event.preventDefault(); window.pinOutfit('${outfit.mainImage}', '${outfit.seoTitle || outfit.season + ' outfit'}', '/outfit/${outfit.slug}')`}
+        class="bg-white/90 hover:bg-white p-2 rounded-full shadow-lg"
+        aria-label="Pin this outfit"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="17" x2="12" y2="22"></line>
+          <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>
+        </svg>
+      </button>
+    </div>
+  </a>
+</div>
+
+<script>
+  window.pinOutfit = function(imageUrl, title, url) {
+    const fullUrl = window.location.origin + url;
+    const pinterestUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(fullUrl)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(title)}`;
+    window.open(pinterestUrl, '_blank', 'width=750,height=600');
+    trackEvent('pin_click');
+  }
+</script>

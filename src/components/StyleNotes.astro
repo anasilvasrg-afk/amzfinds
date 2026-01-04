@@ -1,0 +1,30 @@
+---
+export interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+---
+
+{content && (
+  <div class="mt-10 rounded-xl overflow-hidden bg-[#FAF8F5] border border-stone-200 dark:bg-neutral-800/50 dark:border-neutral-700">
+    <!-- Decorative top line -->
+    <div class="h-1 bg-gradient-to-r from-stone-200 via-stone-300 to-stone-200 dark:from-neutral-700 dark:via-neutral-600 dark:to-neutral-700"></div>
+    
+    <div class="p-6 md:p-8">
+      <!-- Header with decorative elements -->
+      <div class="text-center mb-6">
+        <span class="text-xs uppercase tracking-[0.2em] text-stone-400 dark:text-neutral-500">✦</span>
+        <h3 class="style-notes text-xl md:text-2xl font-medium mt-2 mb-1 text-stone-700 dark:text-neutral-200">
+          Style Notes
+        </h3>
+        <div class="w-12 h-px mx-auto bg-stone-300 dark:bg-neutral-600"></div>
+      </div>
+      
+      <!-- Content -->
+      <p class="text-sm md:text-base leading-relaxed whitespace-pre-wrap text-stone-600 dark:text-neutral-300">
+        {content}
+      </p>
+    </div>
+  </div>
+)}
